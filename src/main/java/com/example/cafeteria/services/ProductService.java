@@ -1,5 +1,6 @@
 package com.example.cafeteria.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,34 +24,34 @@ public class ProductService implements ProductInterface {
     public ProductModel saveProduct(ProductRecordDto productRecordDto) {
         var productModel = new ProductModel();
         BeanUtils.copyProperties(productRecordDto, productModel);
+        
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        productModel.setDateEntry(currentDateTime);
+        
         return productRepository.save(productModel);
     }
 
-//    @Override
-//    public List<ProductModel> getAllProducts() {
-//        // Implemente a lógica para obter todos os produtos
-//    }
-//
-//    @Override
-//    public Optional<ProductModel> getOneProduct(UUID id) {
-//        // Implemente a lógica para obter um produto específico
-//    }
-//
-//    @Override
-//    public ProductModel updateProduct(UUID id, ProductRecordDto productRecordDto) {
-//        // Implemente a lógica para atualizar um produto
-//    }
-//
-//	@Override
-//	public Optional<ProductModel> getOneProduct(UUID id) {
-//		// TODO Auto-generated method stub
-//		return Optional.empty();
-//	}
-//
-//	@Override
-//	public ProductModel updateProduct(UUID id, ProductRecordDto productRecordDto) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+    @Override
+    public List<ProductModel> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Optional<ProductModel> getOneProduct(UUID id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public ProductModel updateProduct(UUID id, ProductRecordDto productRecordDto) {
+        Optional<ProductModel> productOptional = productRepository.findById(id);
+        if(productOptional.isEmpty()) {
+            throw new RuntimeException("Product not found.");
+        }
+        ProductModel existingProduct = productOptional.get();
+        BeanUtils.copyProperties(productRecordDto, existingProduct);
+        
+        return productRepository.save(existingProduct);
+    }
+
 }
 
