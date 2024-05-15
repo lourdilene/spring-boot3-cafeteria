@@ -24,8 +24,9 @@ public class UserModel implements Serializable{
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
+    private String role;
 
 	public UUID getIdUser() {
 		return idUser;
@@ -51,11 +52,19 @@ public class UserModel implements Serializable{
 		this.password = password;
 	}
 
-	public Role getRole() {
+//	public Role getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(Role role) {
+//		this.role = role;
+//	}
+	
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 }
