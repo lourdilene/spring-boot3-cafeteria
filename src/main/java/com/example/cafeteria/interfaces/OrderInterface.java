@@ -11,6 +11,6 @@ public interface OrderInterface {
     OrderModel createOrder(OrderRecordDto orderRecordDto);
     List<OrderModel> getAllOrders();
     Optional<OrderModel> getOrderById(UUID id);
-//    OrderModel updateOrder(UUID id, OrderRecordDto orderRecordDto);
-//    void deleteOrder(UUID id);
+    OrderModel updateOrder(UUID id, OrderRecordDto orderRecordDto);
+    Boolean deleteOrderById(UUID id);
 }

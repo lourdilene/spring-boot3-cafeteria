@@ -65,33 +65,48 @@ public class OrderService implements OrderInterface {
     public Optional<OrderModel> getOrderById(UUID id) {
         return orderRepository.findById(id);
     }
-//
-//    @Override
-//    public OrderModel updateOrder(UUID id, OrderDto orderDto) {
-//        OrderModel existingOrder = orderRepository.findById(id)
-//                                                  .orElseThrow(() -> new RuntimeException("Order not found."));
-//
-//        UserModel userModel = userRepository.findById(orderDto.getUserId())
-//                                            .orElseThrow(() -> new RuntimeException("User not found."));
-//        existingOrder.setUserModel(userModel);
-//        existingOrder.setStatus(orderDto.getStatus());
-//        existingOrder.setDateEntry(LocalDateTime.parse(orderDto.getDateEntry()));
-//
-//        for (OrderDto.OrderProductDto orderProductDto : orderDto.getProducts()) {
-//            ProductModel productModel = productRepository.findById(orderProductDto.getProductId())
-//                                                         .orElseThrow(() -> new RuntimeException("Product not found."));
-//            OrderProductModel orderProductModel = new OrderProductModel();
-//            orderProductModel.setProduct(productModel);
-//            orderProductModel.setQty(orderProductDto.getQty());
-//            existingOrder.getProducts().add(orderProductModel);
-//        }
-//
-//        return orderRepository.save(existingOrder);
-//    }
-//
-//    @Override
-//    public void deleteOrder(UUID id) {
-//        orderRepository.deleteById(id);
-//    }
+
+    @Override
+    public OrderModel updateOrder(UUID id, OrderRecordDto orderRecordDto) {
+        OrderModel existingOrder = orderRepository.findById(id)
+                                                  .orElseThrow(() -> new RuntimeException("Order not found."));
+
+        UserModel userModel = userRepository.findById(orderRecordDto.getIdUser())
+                                            .orElseThrow(() -> new RuntimeException("User not found."));
+        existingOrder.setUserModel(userModel);
+        existingOrder.setStatus(orderRecordDto.getStatus());
+        existingOrder.setDateEntry(orderRecordDto.getDateEntry());
+
+        // Remove all products if productsQty is empty
+        if (orderRecordDto.getProductsQty().isEmpty()) {
+            existingOrder.getProductsQty().clear();
+        } else {
+            // Clear the existing productsQty list before updating
+            existingOrder.getProductsQty().clear();
+
+            // Update the products
+            for (OrderProductRecordDto orderProductDto : orderRecordDto.getProductsQty()) {
+                ProductModel productModel = productRepository.findById(orderProductDto.getIdProduct())
+                                                             .orElseThrow(() -> new RuntimeException("Product not found."));
+                OrderProductModel orderProductModel = new OrderProductModel();
+                orderProductModel.setProduct(productModel);
+                orderProductModel.setQty(orderProductDto.getQty());
+//                orderProductModel.setOrder(existingOrder); // Set the order for bi-directional mapping
+                existingOrder.getProductsQty().add(orderProductModel);
+            }
+        }
+
+        return orderRepository.save(existingOrder);
+    }
+
+    @Override
+    public Boolean deleteOrderById(UUID id) {
+        Optional<OrderModel> orderOptional = orderRepository.findById(id);
+        if (orderOptional.isPresent()) {
+            orderRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
 

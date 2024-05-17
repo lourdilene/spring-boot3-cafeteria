@@ -35,8 +35,17 @@ public class OrderProductModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_product")
+    
     private ProductModel product;
     
+//	public OrderModel getOrder() {
+//		return order;
+//	}
+//
+//	public void setOrder(OrderModel order) {
+//		this.order = order;
+//	}
+
 	public UUID getIdOrderProduct() {
 		return idOrderProduct;
 	}

@@ -32,7 +32,8 @@ public class OrderModel implements Serializable {
 	@JoinColumn(name = "id_user")
     private UserModel userModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_orders")
     private List<OrderProductModel> productsQty = new ArrayList<>();
 
     private String status;
