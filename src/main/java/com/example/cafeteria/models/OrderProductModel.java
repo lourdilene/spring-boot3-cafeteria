@@ -35,7 +35,6 @@ public class OrderProductModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_product")
-    
     private ProductModel product;
     
 //	public OrderModel getOrder() {

@@ -12,4 +12,5 @@ public interface ProductInterface {
     List<ProductModel> getAllProducts();
     Optional<ProductModel> getOneProduct(UUID id);
     ProductModel updateProduct(UUID id, ProductRecordDto productRecordDto);
+    Void deleteProduct(UUID id);
 }
