@@ -3,12 +3,16 @@ package com.example.cafeteria.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +31,9 @@ public class UserModel implements Serializable{
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
     private String role;
+    
+    @OneToMany(mappedBy = "userModel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderModel> orders = new ArrayList<>();
 
 	public UUID getIdUser() {
 		return idUser;

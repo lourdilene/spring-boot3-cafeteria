@@ -17,23 +17,23 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserInterface userService;
+    private UserInterface userIntervace;
 
     @PostMapping("/users")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserRecordDto userRecordDto) {
-        UserModel savedUser = userService.saveUser(userRecordDto);
+        UserModel savedUser = userIntervace.saveUser(userRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<UserModel>> getAllUsers() {
-        List<UserModel> users = userService.getAllUsers();
+        List<UserModel> users = userIntervace.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Object> getOneUser(@PathVariable(value="id") UUID id) {
-        Optional<UserModel> userOptional = userService.getUser(id);
+        Optional<UserModel> userOptional = userIntervace.getUser(id);
         if(userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
@@ -43,17 +43,17 @@ public class UserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(value="id") UUID id,
                                              @RequestBody @Valid UserRecordDto userRecordDto) {
-        UserModel updatedUser = userService.updateUser(id, userRecordDto);
+        UserModel updatedUser = userIntervace.updateUser(id, userRecordDto);
         return ResponseEntity.ok(updatedUser);
     }
     
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable(value="id") UUID id) {
-        Optional<UserModel> userOptional = userService.getUser(id);
+        Optional<UserModel> userOptional = userIntervace.getUser(id);
         if(userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
-        userService.deleteUser(id);
+        userIntervace.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted Succefully.");
     }
 }

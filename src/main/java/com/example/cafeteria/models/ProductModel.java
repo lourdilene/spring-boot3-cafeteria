@@ -3,12 +3,16 @@ package com.example.cafeteria.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +28,9 @@ public class ProductModel implements Serializable{
     private String image;
     private String type;
     private LocalDateTime dateEntry;
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<OrderProductModel> orderProducts;
 	
 	public UUID getIdProduct() {
 		return idProduct;
@@ -58,12 +65,20 @@ public class ProductModel implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-
+    
     public LocalDateTime getDateEntry() {
         return dateEntry;
     }
     
     public void setDateEntry(LocalDateTime dateEntry) {
         this.dateEntry = dateEntry;
+    }
+    
+    public Set<OrderProductModel> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(Set<OrderProductModel> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

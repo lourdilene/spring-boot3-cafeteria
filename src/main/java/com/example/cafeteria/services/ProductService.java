@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.cafeteria.dtos.ProductRecordDto;
 import com.example.cafeteria.interfaces.ProductInterface;
 import com.example.cafeteria.models.ProductModel;
+import com.example.cafeteria.models.ProductModel;
 import com.example.cafeteria.repositories.ProductRepository;
 
 @Service
@@ -51,6 +52,16 @@ public class ProductService implements ProductInterface {
         BeanUtils.copyProperties(productRecordDto, existingProduct);
         
         return productRepository.save(existingProduct);
+    }
+    
+    @Override
+    public Void deleteProduct(UUID id) {
+        Optional<ProductModel> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isEmpty()) {
+            throw new RuntimeException("User not found.");
+        }
+        productRepository.delete(optionalProduct.get());
+        return null;
     }
 }
 
