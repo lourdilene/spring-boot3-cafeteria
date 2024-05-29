@@ -23,7 +23,13 @@ import com.example.cafeteria.models.UserModel;
 import com.example.cafeteria.repositories.ProductRepository;
 import com.example.cafeteria.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 public class ProductController {
@@ -42,9 +48,31 @@ public class ProductController {
         List<ProductModel> products = productService.getAllProducts();
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
-
+    
+    
+    @Operation(
+            summary = "Busca uma lista com todos os táxis",
+            method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operação com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProductModel.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Parametros inválidos",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = Error.class)
+                    )
+            ),
+    })
     @GetMapping("/products/{id}")
-    public ResponseEntity<Object> getOneProduct(@PathVariable(value="id") UUID id) {
+    public ResponseEntity<?> getOneProduct(@PathVariable(value="id") UUID id) {
         Optional<ProductModel> productOptional = productService.getOneProduct(id);
         if(productOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");

@@ -29,8 +29,8 @@ public class ProductModel implements Serializable{
     private String type;
     private LocalDateTime dateEntry;
     
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<OrderProductModel> orderProducts;
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private Set<OrderProductModel> orderProducts;
 	
 	public UUID getIdProduct() {
 		return idProduct;
@@ -74,11 +74,11 @@ public class ProductModel implements Serializable{
         this.dateEntry = dateEntry;
     }
     
-    public Set<OrderProductModel> getOrderProducts() {
-        return orderProducts;
-    }
-
-    public void setOrderProducts(Set<OrderProductModel> orderProducts) {
-        this.orderProducts = orderProducts;
-    }
+//    public Set<OrderProductModel> getOrderProducts() {
+//        return orderProducts;
+//    }
+//
+//    public void setOrderProducts(Set<OrderProductModel> orderProducts) {
+//        this.orderProducts = orderProducts;
+//    }
 }
