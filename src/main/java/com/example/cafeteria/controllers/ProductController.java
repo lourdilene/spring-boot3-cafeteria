@@ -51,7 +51,7 @@ public class ProductController {
     
     
     @Operation(
-            summary = "Busca uma lista com todos os táxis",
+            summary = "Busca uma lista com todos os produtos",
             method = "GET")
     @ApiResponses(value = {
             @ApiResponse(
